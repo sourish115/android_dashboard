@@ -21,7 +21,7 @@ import java.util.List;
 
 class DashboardListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-    private List<String> PostList;
+    //private List<String> PostList;
     private List<PostsDataModel> possst;
 
     private Context mContext;
@@ -40,7 +40,7 @@ class DashboardListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 DashboardListAdapter(Context context) {
 
     mContext = context;
-    PostList =new ArrayList<>();
+    //PostList =new ArrayList<>();
     possst = new ArrayList<>();
 }
 
@@ -68,7 +68,7 @@ DashboardListAdapter(Context context) {
 
     void addLast(PostsDataModel str){
         possst.add(str);
-        notifyItemInserted(possst.size()-1);
+        notifyItemInserted(possst.size());
     }
 
     public void load(){
@@ -83,7 +83,8 @@ DashboardListAdapter(Context context) {
 //            PostList.add("Hello");
 //            PostList.add("Hello");
 //            PostList.add("Hello");
-//            Log.d("LIST:",PostList.toString());
+            Log.d("LIST:",possst.get(0).getName());
+            Log.d("LIST:",possst.get(1).toString());
             notifyDataSetChanged();
         } catch(Exception e){
             //nothing to load
@@ -107,7 +108,7 @@ DashboardListAdapter(Context context) {
         void bind(final Context context, int postition,final PostsDataModel exx, @Nullable final OnItemClickListener clickListener, @Nullable final OnItemLongClickListener longClickListener){
             post.setText(exx.getPost());
             name.setText(exx.getName());
-
+            img.setImageResource(R.drawable.ic_sentiment_very_satisfied_black_24dp);
             // Set an OnClickListener to this item.
             if (clickListener != null) {
                 itemView.setOnClickListener(new View.OnClickListener() {

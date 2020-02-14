@@ -150,7 +150,7 @@ public class DashbaordList extends Fragment {
     private void setUpChannelListAdapter() {
         mChannelListAdapter.setOnItemClickListener(new DashboardListAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(String str) {
+            public void onItemClick(PostsDataModel obj) {
                 //enterGroupChannel(channel);
                 Toast.makeText(getContext(),"KeyPress",Toast.LENGTH_LONG).show();
             }
@@ -158,7 +158,7 @@ public class DashbaordList extends Fragment {
 
         mChannelListAdapter.setOnItemLongClickLsitener(new DashboardListAdapter.OnItemLongClickListener() {
             @Override
-            public void onItemLongClick(final String str) {
+            public void onItemLongClick(final PostsDataModel obj) {
                 //showChannelOptionsDialog(channel);
                 Toast.makeText(getContext(),"LongPress",Toast.LENGTH_LONG).show();
             }
@@ -170,12 +170,12 @@ public class DashbaordList extends Fragment {
     }
 
     private void refreshItemList(){
-        List<String> list = new ArrayList<>();
-        list.add("Hello");
-        list.add("Hello");
-        list.add("Hello");
-        list.add("Hello");
-        list.add("Hello");
+        List<PostsDataModel> list = new ArrayList<>();
+//        list.add("Hello");
+//        list.add("Hello");
+//        list.add("Hello");
+//        list.add("Hello");
+//        list.add("Hello");
         mChannelListAdapter.setGroupChannelList(list);
 
         if (mSwipeRefresh.isRefreshing()) {
