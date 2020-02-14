@@ -11,9 +11,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -25,7 +28,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link DashbaordList.OnFragmentInteractionListener} interface
+ * {@link } interface
  * to handle interaction events.
  * Use the {@link DashbaordList#newInstance} factory method to
  * create an instance of this fragment.
@@ -45,7 +48,10 @@ public class DashbaordList extends Fragment {
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private DashboardListAdapter mChannelListAdapter;
-    private FloatingActionButton mCreateChannelFab;
+    private EditText mPostInput;
+    private Button mPostButton;
+    private PostsDataModel InpObj;
+    //private FloatingActionButton mCreateChannelFab;
     //private GroupChannelListQuery mChannelListQuery;
     private SwipeRefreshLayout mSwipeRefresh;
 
@@ -94,6 +100,8 @@ public class DashbaordList extends Fragment {
         ((MainActivity) getActivity()).setActionBarTitle("Dashbaord");
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_group_channel_list);
+        mPostInput = rootView.findViewById(R.id.post_input);
+        mPostButton = rootView.findViewById(R.id.post_button);
         //mCreateChannelFab = (FloatingActionButton) rootView.findViewById(R.id.fab_group_channel_list);
         mSwipeRefresh = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_layout_group_channel_list);
 
@@ -107,7 +115,18 @@ public class DashbaordList extends Fragment {
 
         mChannelListAdapter = new DashboardListAdapter(getActivity());
         mChannelListAdapter.load();
-
+        mPostButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mPostInput.getText().equals("")){
+                    Log.e("NoInput", "onClick: ");
+                }
+                else{
+                    InpObj = new PostsDataModel("Mehak",mPostInput.getText().toString(),"R.id.ic_sentiment_very_satisfied_black_24dp");
+                    mChannelListAdapter.addLast(InpObj);
+                }
+            }
+        });
         setUpRecyclerView();
         setUpChannelListAdapter();
 
@@ -171,13 +190,13 @@ public class DashbaordList extends Fragment {
 
     private void refreshItemList(){
         List<PostsDataModel> list = new ArrayList<>();
+        list.equals(mChannelListAdapter);
 //        list.add("Hello");
 //        list.add("Hello");
 //        list.add("Hello");
 //        list.add("Hello");
 //        list.add("Hello");
         mChannelListAdapter.setGroupChannelList(list);
-
         if (mSwipeRefresh.isRefreshing()) {
             mSwipeRefresh.setRefreshing(false);
         }
