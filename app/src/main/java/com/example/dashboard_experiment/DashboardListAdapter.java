@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -21,6 +22,7 @@ import java.util.List;
 class DashboardListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private List<String> PostList;
+    private List<PostsDataModel> possst;
 
     private Context mContext;
 
@@ -28,17 +30,18 @@ class DashboardListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private OnItemClickListener mItemClickListener;
 
     interface OnItemClickListener {
-        void onItemClick(String str);
+        void onItemClick(PostsDataModel obj);
     }
 
     interface OnItemLongClickListener {
-        void onItemLongClick(String str);
+        void onItemLongClick(PostsDataModel obj);
     }
 
 DashboardListAdapter(Context context) {
 
     mContext = context;
     PostList =new ArrayList<>();
+    possst = new ArrayList<>();
 }
 
     @Override
@@ -50,33 +53,37 @@ DashboardListAdapter(Context context) {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((ChannelHolder) holder).bind(mContext, position, PostList.get(position), mItemClickListener, mItemLongClickListener);
+        ((ChannelHolder) holder).bind(mContext, position, possst.get(position), mItemClickListener, mItemLongClickListener);
     }
 
     @Override
     public int getItemCount() {
-        return PostList.size();
+        return possst.size();
     }
 
-    void setGroupChannelList(List<String> channelList) {
-        PostList = channelList;
+    void setGroupChannelList(List<PostsDataModel> channelList) {
+        possst = channelList;
         notifyDataSetChanged();
     }
 
-    void addLast(String str){
-        PostList.add(str);
-        notifyItemInserted(PostList.size()-1);
+    void addLast(PostsDataModel str){
+        possst.add(str);
+        notifyItemInserted(possst.size()-1);
     }
 
     public void load(){
+        PostsDataModel temp = new PostsDataModel("Sourish","Hello people","R.drawable.ic");
         try{
-            PostList.clear();
-            PostList.add("Sourish");
-            PostList.add("Hello");
-            PostList.add("Hello");
-            PostList.add("Hello");
-            PostList.add("Hello");
-            Log.d("LIST:",PostList.toString());
+            possst.clear();
+            possst.add(temp);
+            possst.add(temp);
+//            PostList.clear();
+//            PostList.add("Sourish");
+//            PostList.add("Hello");
+//            PostList.add("Hello");
+//            PostList.add("Hello");
+//            PostList.add("Hello");
+//            Log.d("LIST:",PostList.toString());
             notifyDataSetChanged();
         } catch(Exception e){
             //nothing to load
@@ -88,20 +95,25 @@ DashboardListAdapter(Context context) {
      */
     private class ChannelHolder extends RecyclerView.ViewHolder {
         TextView post;
+        ImageView img;
+        TextView name;
 
         ChannelHolder(View itemView){
             super(itemView);
-            post = (TextView)itemView.findViewById(R.id.post);
+            post = itemView.findViewById(R.id.post);
+            name = itemView.findViewById(R.id.name);
+            img = itemView.findViewById(R.id.displaypic);
         }
-        void bind(final Context context, int postition,final String str, @Nullable final OnItemClickListener clickListener, @Nullable final OnItemLongClickListener longClickListener){
-            post.setText(str);
+        void bind(final Context context, int postition,final PostsDataModel exx, @Nullable final OnItemClickListener clickListener, @Nullable final OnItemLongClickListener longClickListener){
+            post.setText(exx.getPost());
+            name.setText(exx.getName());
 
             // Set an OnClickListener to this item.
             if (clickListener != null) {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        clickListener.onItemClick(str);
+                        clickListener.onItemClick(exx);
                     }
                 });
             }
@@ -111,7 +123,7 @@ DashboardListAdapter(Context context) {
                 itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        longClickListener.onItemLongClick(str);
+                        longClickListener.onItemLongClick(exx);
 
                         // return true if the callback consumed the long click
                         return true;
